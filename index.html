@@ -16,15 +16,15 @@
 <div class="field"><label for="perBox">1箱のユニット数</label><input id="perBox" type="number" min="1" step="1" value="54" readonly required><span class="unit">個/箱</span></div>
 <div class="field"><label for="perPallet">1パレットの箱数</label><input id="perPallet" type="number" min="1" step="1" value="30" readonly required><span class="unit">箱</span></div>
 <div class="rule">
-<div class="field"><label for="machine1">1号機良品</label><input id="machine1" type="number" min="0" step="1" value="2002" required><span class="unit">個</span></div>
-<div class="field"><label for="machine3">3号機良品</label><input id="machine3" type="number" min="0" step="1" value="2096" required><span class="unit">個</span></div>
+<div class="field"><label for="machine1">1号機良品</label><input id="machine1" type="number" min="0" step="1" value="2002"><span class="unit">個</span></div>
+<div class="field"><label for="machine3">3号機良品</label><input id="machine3" type="number" min="0" step="1" value="2096"><span class="unit">個</span></div>
 </div></section>
 <section class="card"><h2>梱包数・製品・不良品</h2>
-<div class="field"><label for="pallets">パレット</label><input id="pallets" type="number" min="0" step="1" value="2" required><span class="unit">台</span></div>
-<div class="field"><label for="boxes">箱</label><input id="boxes" type="number" min="0" step="1" value="15" required><span class="unit">箱</span></div>
+<div class="field"><label for="pallets">パレット</label><input id="pallets" type="number" min="0" step="1" value="2"><span class="unit">台</span></div>
+<div class="field"><label for="boxes">箱</label><input id="boxes" type="number" min="0" step="1" value="15"><span class="unit">箱</span></div>
 <div class="rule">
-<div class="field"><label for="remaining">製品</label><input id="remaining" type="number" min="0" step="1" value="48" required><span class="unit">個</span></div>
-<div class="field"><label for="defects">不良品</label><input id="defects" type="number" min="0" step="1" value="2" required><span class="unit">個</span></div>
+<div class="field"><label for="remaining">製品</label><input id="remaining" type="number" min="0" step="1" value="48"><span class="unit">個</span></div>
+<div class="field"><label for="defects">不良品</label><input id="defects" type="number" min="0" step="1" value="2"><span class="unit">個</span></div>
 </div></section></div>
 <p id="error" role="alert"></p>
 <section class="result" aria-live="polite" aria-atomic="true"><h2>合計（差引）</h2><output class="total" id="total">-2</output><span> 個</span>
@@ -48,13 +48,14 @@ function calculate(v){
 function update(){
  const v={};let valid=true;
  for(const input of inputs){
-  const n=input.valueAsNumber;
-  const ok=input.value!==''&&Number.isSafeInteger(n)&&n>=Number(input.min);
+  const empty=input.value===''&&!input.readOnly&&!input.validity.badInput;
+  const n=empty?0:input.valueAsNumber;
+  const ok=Number.isSafeInteger(n)&&n>=Number(input.min);
   input.setAttribute('aria-invalid',String(!ok));valid=valid&&ok;v[input.id]=n;
  }
  const result=valid?calculate(v):null;
  if(result&&(!Object.values(result).every(Number.isSafeInteger)||!Number.isSafeInteger(result.palletUnits+result.boxUnits+v.defects+v.remaining)))valid=false;
- el('error').textContent=valid?'':'すべての欄に範囲内の整数を入力してください。梱包設定は1以上、その他は0以上です。大きすぎる数値は計算できません。';
+ el('error').textContent=valid?'':'範囲内の整数を入力してください。梱包設定は1以上、その他は0以上です。大きすぎる数値は計算できません。';
  for(const id of ['produced','palletUnits','boxUnits','total'])el(id).textContent=valid?fmt.format(result[id]):'—';
  el('status').textContent=!valid?'入力内容を確認してください。':result.total===0?'製造数と、梱包・不良品・残の合計が一致しています。':result.total<0?`梱包・不良品・残の合計が、製造数を${fmt.format(-result.total)}個上回っています。`:`製造数が、梱包・不良品・残の合計を${fmt.format(result.total)}個上回っています。`;
 }
@@ -62,7 +63,7 @@ form.addEventListener('input',update);
 form.addEventListener('submit',event=>event.preventDefault());
 form.addEventListener('reset',event=>{
  event.preventDefault();
- for(const input of inputs){if(!input.readOnly)input.value='0';}
+ for(const input of inputs){if(!input.readOnly)input.value='';}
  update();
 });
 update();
