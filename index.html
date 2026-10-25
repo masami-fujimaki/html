@@ -12,23 +12,24 @@
 <header><div class="eyebrow">ユニット数の確認</div><h1>発熱ユニット数チェック</h1><p>設備の良品数と、パレット・箱・端数から求めた当日の完成品数を照合します。</p><p class="instructions">数量8項目をすべて入力してください。該当がない項目は0を入力します。</p></header>
 <form id="calculator" novalidate>
 <div class="layout">
-<section class="card"><h2>設備の良品数・前日分</h2>
-<div class="field"><label for="u0">前日からの端数良品</label><input id="u0" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="previous-help error"><span class="unit">個</span></div>
-<div class="rule">
+<section class="card"><h2>設備側：補正後の設備数</h2>
+<div>
 <div class="field"><label for="g1">1号機の良品数</label><input id="g1" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="error"><span class="unit">個</span></div>
 <div class="field"><label for="g3">3号機の良品数</label><input id="g3" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="error"><span class="unit">個</span></div>
 </div>
 <div class="rule"><div class="field"><label for="d">計上後の不良品数</label><input id="d" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="defect-help error"><span class="unit">個</span></div></div>
-<p class="hint" id="previous-help">前日分は、箱外・詰めかけ箱内の良品だけを入力します。前日に完成済みの箱数は不要です。</p>
 <p class="hint" id="defect-help"><strong>不良品数：</strong>当日に設備で良品計上された後、不良となった分。設備数から控除済みの分は含めません。</p>
 </section>
-<section class="card"><h2>当日のパレット・箱・端数</h2>
+<section class="card"><h2>現物側：当日完成品数</h2>
 <div class="field"><label for="p">搬出パレット数</label><input id="p" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="pallet-help error"><span class="unit">枚</span></div>
 <div class="field"><label for="e">別に数える当日箱数</label><input id="e" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="box-help error"><span class="unit">箱</span></div>
 <div class="field"><label for="r">未搬出の当日箱数</label><input id="r" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="box-help error"><span class="unit">箱</span></div>
-<div class="rule"><div class="field"><label for="u1">終了時の端数良品</label><input id="u1" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="remaining-help error"><span class="unit">個</span></div></div>
+<div class="rule"><div class="field"><label for="u1">終了時の端数良品</label><input id="u1" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="remaining-help error"><span class="unit">個</span></div>
+<div class="field"><label for="u0">前日からの端数良品</label><input id="u0" type="number" inputmode="numeric" min="0" step="1" required aria-describedby="previous-help error"><span class="unit">個</span></div>
+</div>
 <p class="hint" id="pallet-help"><strong>パレット：</strong>当日箱のみを30箱載せて搬出した分。前日の箱が載ったパレットは数えません。</p>
 <p class="hint" id="box-help"><strong>箱：</strong>パレット数に含めない搬出分は「別に数える当日箱数」、場内に残る分は「未搬出の当日箱数」へ。良品<span id="box-capacity-text">54</span>個入りの当日箱だけを数えます。</p>
+<p class="hint" id="previous-help"><strong>前日からの端数：</strong>当日完成品数から差し引きます。箱外・詰めかけ箱内の良品だけを入力します。前日に完成済みの箱数は不要です。</p>
 <p class="hint" id="remaining-help"><strong>終了時の端数：</strong>完成箱に含まれない良品だけを数え、不良品は含めません。</p>
 </section>
 </div>
